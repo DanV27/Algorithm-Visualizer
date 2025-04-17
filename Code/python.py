@@ -3,33 +3,41 @@ import random
 import math
 pygame.init()
 
+# Class to handle drawing and visualization settings
 class DrawInformation:
+    # Define colors
     BLACK = 0, 0, 0
     WHITE = 255, 255, 255
     GREEN = 0, 255, 0
     RED = 255, 0, 0
     BACKGROUND_COLOR = WHITE
 
+    # Gradients for bar colors
     GRADIENTS = [
         (128, 128, 128),
         (160, 160, 160),
         (192, 192, 192)
     ]
 
+    # Fonts for text
     FONT = pygame.font.SysFont('arial', 20)
-    LARGE_FONT = pygame.font.SysFont('arial', 30, bold=True)  # Updated to Arial, bold
+    LARGE_FONT = pygame.font.SysFont('arial', 30, bold=True)  # Bold Arial font for large text
 
+    # Padding for the visualization
     SIDE_PAD = 100
     TOP_PAD = 150
 
+    # Initialize the drawing information
     def __init__(self, width, height, lst):
         self.width = width
         self.height = height
 
+        # Create the window
         self.window = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Sorting Algorithm Visualization")
         self.set_list(lst)
 
+    # Set the list to be visualized and calculate bar dimensions
     def set_list(self, lst):
         self.lst = lst
         self.min_val = min(lst)
@@ -39,11 +47,13 @@ class DrawInformation:
         self.block_height = math.floor((self.height - self.TOP_PAD) / (self.max_val - self.min_val))
         self.start_x = self.SIDE_PAD // 2
 
+    # Static method to generate a random list of numbers
     @staticmethod
     def generate_starting_list(n, min_val, max_val):
         return [random.randint(min_val, max_val) for _ in range(n)]
 
 
+# Function to draw the visualization
 def draw(draw_info, algo_name, ascending, reset_highlight=False, sorting=False):
     draw_info.window.fill(draw_info.BACKGROUND_COLOR)
 
@@ -82,6 +92,7 @@ def draw(draw_info, algo_name, ascending, reset_highlight=False, sorting=False):
     pygame.display.update()
 
 
+# Function to draw the list of bars
 def draw_list(draw_info, color_positions={}, clear_bg=False):
     lst = draw_info.lst
 
@@ -105,17 +116,7 @@ def draw_list(draw_info, color_positions={}, clear_bg=False):
         pygame.display.update()
 
 
-def generate_starting_list(n, min_val, max_val):
-    lst = []
-
-    for _ in range(n):
-        val = random.randint(min_val, max_val)
-        lst.append(val)
-
-    return lst
-
-
-# Add a delay in the sorting loop
+# Bubble sort algorithm with visualization
 def bubble_sort(draw_info, ascending=True):
     lst = draw_info.lst
 
@@ -136,6 +137,8 @@ def bubble_sort(draw_info, ascending=True):
 
     return lst
 
+
+# Insertion sort algorithm with visualization
 def insertion_sort(draw_info, ascending=True):
     lst = draw_info.lst
 
@@ -161,6 +164,8 @@ def insertion_sort(draw_info, ascending=True):
 
     return lst
 
+
+# Function to render text with a border
 def render_text_center(draw_info, text, y, font, color, border_color=(128, 128, 128)):
     # Render the border by drawing the text offset in a larger range
     rendered_text = font.render(text, 1, border_color)
@@ -173,6 +178,7 @@ def render_text_center(draw_info, text, y, font, color, border_color=(128, 128, 
     draw_info.window.blit(rendered_text, (draw_info.width / 2 - rendered_text.get_width() / 2, y))
 
 
+# Main function to run the program
 def main():
     run = True
     clock = pygame.time.Clock()
